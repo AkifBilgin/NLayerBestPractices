@@ -2,6 +2,8 @@ using Microsoft.EntityFrameworkCore;
 using NLayerBestPractices.Core.Repositories;
 using NLayerBestPractices.Core.Services;
 using NLayerBestPractices.Core.UnitOfWorks;
+using NLayerBestPractices.Service.Mapping;
+using NLayerBestPractices.Service.Services;
 using NLayerBestPratices.Repository;
 using NLayerBestPratices.Repository.Repositories;
 using NLayerBestPratices.Repository.UnitOfWork;
@@ -24,7 +26,13 @@ namespace NLayerBestPractices.API
 
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
             builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
-            //builder.Services.AddScoped(typeof(IService<>), typeof(Service<>));
+            builder.Services.AddScoped(typeof(IService<>), typeof(Services<>));
+            builder.Services.AddAutoMapper(typeof(MapProfile));
+            builder.Services.AddScoped<IProductRepository, ProductRepository>();
+            builder.Services.AddScoped<IProductService, ProductService>();
+            builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+            builder.Services.AddScoped<ICategoryService, CategoryService>();
+
             builder.Services.AddDbContextPool<AppDbContext>(x =>
             {
                 x.UseSqlServer(builder.Configuration.GetConnectionString("SqlConnection"), options =>
@@ -33,7 +41,8 @@ namespace NLayerBestPractices.API
                 });
 
             });
-
+           
+            
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
