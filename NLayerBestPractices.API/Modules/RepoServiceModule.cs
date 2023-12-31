@@ -25,7 +25,7 @@ namespace NLayerBestPractices.API.Modules
 
             var repoAssembly = Assembly.GetAssembly(typeof(AppDbContext));
             
-            var serviceAssembly = Assembly.GetAssembly(typeof(ProductServiceWithNoCaching));
+            var serviceAssembly = Assembly.GetAssembly(typeof(ProductService));
 
             builder.RegisterAssemblyTypes(apiAssembly, repoAssembly, serviceAssembly).Where(x=>x.Name.EndsWith("Repository")).AsImplementedInterfaces().InstancePerLifetimeScope();
             builder.RegisterAssemblyTypes(apiAssembly, repoAssembly, serviceAssembly).Where(x => x.Name.EndsWith("Service")).AsImplementedInterfaces().InstancePerLifetimeScope();
