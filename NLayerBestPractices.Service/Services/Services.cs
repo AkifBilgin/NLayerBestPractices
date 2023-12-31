@@ -2,6 +2,7 @@
 using NLayerBestPractices.Core.Repositories;
 using NLayerBestPractices.Core.Services;
 using NLayerBestPractices.Core.UnitOfWorks;
+using NLayerBestPractices.Service.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -36,9 +37,9 @@ namespace NLayerBestPractices.Service.Services
             return entities;
         }
 
-        public async Task<bool> Any(Expression<Func<T, bool>> expression)
+        public async Task<bool> AnyAsync(Expression<Func<T, bool>> expression)
         {
-            return await _repository.Any(expression);
+            return await _repository.AnyAsync(expression);
         }
 
         public async Task<IEnumerable<T>> GetAllAsync()
@@ -48,7 +49,12 @@ namespace NLayerBestPractices.Service.Services
 
         public async Task<T> GetByIdAsync(int id)
         {
-            return await _repository.GetByIdAsync(id);
+            var hasProduct = await _repository.GetByIdAsync(id);
+            if(hasProduct == null)
+            {
+                throw new NotFoundException($"{typeof(T).Name}({id}) not found");
+            }
+            return hasProduct;
         }
 
         public async Task RemoveRangeAsync(IEnumerable<T> entities)

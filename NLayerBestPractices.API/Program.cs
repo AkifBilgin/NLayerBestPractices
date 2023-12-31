@@ -1,9 +1,17 @@
+using Autofac;
+using Autofac.Extensions.DependencyInjection;
+using FluentValidation.AspNetCore;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using NLayerBestPractices.API.Filters;
+using NLayerBestPractices.API.Middlewares;
+using NLayerBestPractices.API.Modules;
 using NLayerBestPractices.Core.Repositories;
 using NLayerBestPractices.Core.Services;
 using NLayerBestPractices.Core.UnitOfWorks;
 using NLayerBestPractices.Service.Mapping;
 using NLayerBestPractices.Service.Services;
+using NLayerBestPractices.Service.Validations;
 using NLayerBestPratices.Repository;
 using NLayerBestPratices.Repository.Repositories;
 using NLayerBestPratices.Repository.UnitOfWork;
@@ -19,19 +27,19 @@ namespace NLayerBestPractices.API
 
             // Add services to the container.
 
-            builder.Services.AddControllers();
-            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+            builder.Services.AddControllers(options => options.Filters.Add(new ValidateFilterAttribute())).AddFluentValidation(x => x.RegisterValidatorsFromAssemblyContaining<ProductDtoValidator>());
+            //Only by APi in MVC not active
+            builder.Services.Configure<ApiBehaviorOptions>(options =>
+            {
+                options.SuppressModelStateInvalidFilter = true;
+            });
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+            builder.Services.AddMemoryCache();
 
-            builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
-            builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
-            builder.Services.AddScoped(typeof(IService<>), typeof(Services<>));
+            builder.Services.AddScoped(typeof(NotFoundFilter<>));
             builder.Services.AddAutoMapper(typeof(MapProfile));
-            builder.Services.AddScoped<IProductRepository, ProductRepository>();
-            builder.Services.AddScoped<IProductService, ProductService>();
-            builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
-            builder.Services.AddScoped<ICategoryService, CategoryService>();
+
 
             builder.Services.AddDbContextPool<AppDbContext>(x =>
             {
@@ -41,7 +49,12 @@ namespace NLayerBestPractices.API
                 });
 
             });
-           
+        
+            builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
+            builder.Host.ConfigureContainer<ContainerBuilder>(container => container.RegisterModule(new RepoServiceModule()));
+            
+        
+            
             
             var app = builder.Build();
 
@@ -53,6 +66,8 @@ namespace NLayerBestPractices.API
             }
 
             app.UseHttpsRedirection();
+
+            app.UseCustomException();
 
             app.UseAuthorization();
 
