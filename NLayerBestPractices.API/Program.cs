@@ -29,7 +29,7 @@ namespace NLayerBestPractices.API
             builder.Services.AddScoped(typeof(IService<>), typeof(Services<>));
             builder.Services.AddAutoMapper(typeof(MapProfile));
             builder.Services.AddScoped<IProductRepository, ProductRepository>();
-            builder.Services.AddScoped<IProductService, ProductService>();
+            builder.Services.AddScoped<IProductService, ProductServiceWithNoCahcing>();
             builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
             builder.Services.AddScoped<ICategoryService, CategoryService>();
 
