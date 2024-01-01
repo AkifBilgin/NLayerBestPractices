@@ -4,11 +4,6 @@ using NLayerBestPractices.Core.Entities;
 using NLayerBestPractices.Core.Repositories;
 using NLayerBestPractices.Core.Services;
 using NLayerBestPractices.Core.UnitOfWorks;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace NLayerBestPractices.Service.Services
 {
@@ -24,8 +19,8 @@ namespace NLayerBestPractices.Service.Services
 
         public async Task<CustomResponseDto<CategoryWithProductsDto>> GetCatergoryWithProductsAsync(int id)
         {
-           var category = await _categoryRepository.GetCategoryWithProductsAsync(id);
-           var categoryWithProductDto = _mapper.Map<CategoryWithProductsDto>(category);
+            var category = await _categoryRepository.GetCategoryWithProductsAsync(id);
+            var categoryWithProductDto = _mapper.Map<CategoryWithProductsDto>(category);
             return CustomResponseDto<CategoryWithProductsDto>.Success(200, categoryWithProductDto);
         }
     }

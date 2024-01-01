@@ -1,11 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using NLayerBestPractices.Core.Repositories;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace NLayerBestPratices.Repository.Repositories
 {
@@ -21,7 +16,7 @@ namespace NLayerBestPratices.Repository.Repositories
 
         public async Task AddAsync(T entity)
         {
-          await _dbSet.AddAsync(entity);
+            await _dbSet.AddAsync(entity);
         }
 
         public async Task AddRangeAsync(IEnumerable<T> entities)

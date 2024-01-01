@@ -4,11 +4,6 @@ using NLayerBestPractices.Core.Entities;
 using NLayerBestPractices.Core.Repositories;
 using NLayerBestPractices.Core.Services;
 using NLayerBestPractices.Core.UnitOfWorks;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace NLayerBestPractices.Service.Services
 {
@@ -23,13 +18,13 @@ namespace NLayerBestPractices.Service.Services
             _productRepository = productRepository;
         }
 
-        public async Task<CustomResponseDto<List<ProductWithCategoryDto>>> GetProductsWithCategoryAsync()
+        public async Task<List<ProductWithCategoryDto>> GetProductsWithCategoryAsync()
         {
             var product = await _productRepository.GetProductsWithCategoryAsync();
             var producDto = _mapper.Map<List<ProductWithCategoryDto>>(product);
-            return CustomResponseDto<List<ProductWithCategoryDto>>.Success(200, producDto);
-            
-           
+            return producDto;
+
+
         }
     }
 }

@@ -1,0 +1,38 @@
+﻿@model ProductDto
+@{
+    ViewData["Title"] = "Update";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Update Product</h1>
+<form method="post" asp-action="Update" asp-controller="Product">
+<div class="row">
+    <div class="col-md-6">
+        <div class="form-group">
+            <input type="hidden" asp-for="Id" />
+        </div>
+        <div class="form-group">
+            <label class="form-label">Name</label>
+            <input type="text" asp-for="Name" class="form-control" />
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label class="form-label">Price</label>
+            <input type="text" asp-for="Price" class="form-control" />
+            <span asp-validation-for="Price" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label class="form-label">Stock</label>
+            <input type="text" asp-for="Stock" class="form-control" />
+            <span asp-validation-for="Stock" class="text-danger"></span>
+        </div>
+         <div class="form-group">
+            <select type="text" asp-for="CategoryId" asp-items=" ViewBag.categories" class="form-control"></select>
+        </div> 
+    </div>
+    <div class="col-md-6 h-100 d-flex align-items-center justify-content-center align">
+        <button type="submit" class="btn btn-primary">Update</button>
+
+    </div>
+</div>
+</form>

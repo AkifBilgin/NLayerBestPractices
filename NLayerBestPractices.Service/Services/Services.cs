@@ -3,12 +3,7 @@ using NLayerBestPractices.Core.Repositories;
 using NLayerBestPractices.Core.Services;
 using NLayerBestPractices.Core.UnitOfWorks;
 using NLayerBestPractices.Service.Exceptions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace NLayerBestPractices.Service.Services
 {
@@ -32,8 +27,8 @@ namespace NLayerBestPractices.Service.Services
 
         public async Task<IEnumerable<T>> AddRangeAsync(IEnumerable<T> entities)
         {
-           await _repository.AddRangeAsync(entities);
-           await _unitOfWork.CommitAsync();
+            await _repository.AddRangeAsync(entities);
+            await _unitOfWork.CommitAsync();
             return entities;
         }
 
@@ -50,7 +45,7 @@ namespace NLayerBestPractices.Service.Services
         public async Task<T> GetByIdAsync(int id)
         {
             var hasProduct = await _repository.GetByIdAsync(id);
-            if(hasProduct == null)
+            if (hasProduct == null)
             {
                 throw new NotFoundException($"{typeof(T).Name}({id}) not found");
             }

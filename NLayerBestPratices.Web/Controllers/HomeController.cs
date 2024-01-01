@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using NLayerBestPractices.Core.Dtos;
 using NLayerBestPratices.Web.Models;
 using System.Diagnostics;
 
@@ -24,9 +25,9 @@ namespace NLayerBestPratices.Web.Controllers
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
+        public IActionResult Error(CustomErrorViewModel customErrorViewModel)
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            return View(customErrorViewModel);
         }
     }
 }
