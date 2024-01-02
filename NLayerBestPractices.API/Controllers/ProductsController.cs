@@ -23,7 +23,8 @@ namespace NLayerBestPractices.API.Controllers
         [HttpGet("[action]")]
         public async Task<IActionResult> GetProductWithCategory()
         {
-            return CreateActionResult(await _productService.GetProductsWithCategoryAsync());
+            var products = await _productService.GetProductsWithCategoryAsync();
+            return CreateActionResult(products);
         }
 
         [HttpGet]

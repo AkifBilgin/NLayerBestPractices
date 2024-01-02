@@ -2,10 +2,12 @@ using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using FluentValidation.AspNetCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using NLayerBestPractices.Service.Mapping;
 using NLayerBestPractices.Service.Validations;
 using NLayerBestPratices.Repository;
 using NLayerBestPratices.Web.Moules;
+using NLayerBestPratices.Web.Services;
 using NuGet.Protocol;
 using System.Reflection;
 
@@ -31,7 +33,14 @@ namespace NLayerBestPratices.Web
             builder.Services.AddScoped(typeof(NotFoundFilter<>));
             builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
             builder.Host.ConfigureContainer<ContainerBuilder>(container => container.RegisterModule(new RepoSerivceModule()));
-
+            builder.Services.AddHttpClient<ProductApiService>(opt =>
+            {
+                opt.BaseAddress = new Uri(builder.Configuration["BaseUrl"]);
+            });
+            builder.Services.AddHttpClient<CategoryApiService>(opt =>
+            {
+                opt.BaseAddress = new Uri(builder.Configuration["BaseUrl"]);
+            });
             var app = builder.Build();
             app.UseExceptionHandler("/Home/Error");
             // Configure the HTTP request pipeline.

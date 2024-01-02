@@ -1,0 +1,2 @@
+Api-Port : https://localhost:7223/     http://localhost:5105
+MVC-Port: https://localhost:7165/	   http://localhost:5225
